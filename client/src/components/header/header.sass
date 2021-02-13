@@ -1,0 +1,140 @@
+header.nav-header
+    height: 70px
+    width: 100%
+    z-index: 10
+    position: relative
+    // overflow: hidden
+    .svg-container
+        position: absolute
+        top: 0
+        right: 0
+        width: 60%
+        z-index: 11
+    .container.header-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        flex-wrap: no-wrap
+        height: 70px
+        min-height: 70px
+        width: 70%
+        z-index: 12
+        padding: 0
+        .logo
+            height: 40px
+            transition: transform .35s
+            img
+                height: 100%
+                width: auto
+            &:hover
+                transform: scale(1.1)
+        ul
+            display: flex
+            li
+                margin: 0 5px 0 10px
+                a
+                    color: black
+                    text-transform: uppercase
+                    font-size: .8em
+                    font-weight: bold
+                    position: relative
+                    padding: 0 15px 0 0
+                    transition: .35s
+                    &::before
+                        content: ""
+                        position: absolute
+                        right: 0
+                        top: 50%
+                        transform: translateY(-50%)
+                        height: 0
+                        width: 3px
+                        border-radius: 50%
+                        background: black
+                        transition: .35s
+                    &:hover, &.active
+                        color: #C7180C
+                        &::before
+                            height: 3px
+                    &.cart
+                        position: absolute
+                        right: 30px
+                        padding: 0
+                        height: 100%
+                        &::before
+                            width: 0
+                        span
+                            position: absolute
+                            top: -10px
+                            right: -10px
+                            font-size: 12px
+                            background: red
+                            height: 20px
+                            width: 20px
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            border-radius: 50%
+                            color: white
+                        .icon
+                            font-size: 25px
+
+@media screen and ( max-width: 1200px )
+    header.nav-header
+        .container.header-container
+            width: 90%
+            .logo
+                height: 35px
+            ul
+                display: flex
+                li
+                    margin: 0 5px 0 10px
+                    a
+                        padding: 0 10px 0 0
+                        &.cart
+                            position: absolute
+                            right: 20px
+                            padding: 0
+                            height: 100%
+                            .icon
+                                font-size: 20px
+
+@media screen and ( max-width: 768px )
+    header.nav-header
+        .container.header-container
+            width: 95%
+            flex-wrap: wrap
+            .logo
+                height: 30px
+                order: 2
+                position: sticky
+                top: 0
+            nav.navigation
+                order: 3
+                position: sticky
+                top: 0
+            nav.auth
+                order: 1
+                width: 100%
+                ul
+                    justify-content: flex-end
+                    padding: 15px 20px 15px
+                    li
+                        a
+                            text-transform: capitalize
+            ul
+                display: flex
+                li
+                    margin: 0 7px 0
+                    a
+                        padding: 0
+                        font-weight: normal
+                        &:hover, &.active
+                            padding: 0 10px 0 0
+                        &.cart
+                            position: absolute
+                            right: 20px
+                            padding: 0
+                            height: 100%
+                            .icon
+                                font-size: 20px

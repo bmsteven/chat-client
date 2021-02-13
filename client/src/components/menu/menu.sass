@@ -1,0 +1,192 @@
+.menu-bar
+    position: fixed
+    bottom: 0
+    right: 0
+    height: 50px
+    width: 100%
+    background: white
+    box-shadow: 5px 0px 5px rgba(0, 0, 0, .4)
+    // border-radius: 5px
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 9
+    transform: translateY(100%)
+    transition: .45s
+    &.revealed
+        transform: translateY(0)
+        display: flex
+        .drop-up-menu
+            transform: translateY(50px)
+    .burger
+        display: none
+    .nav-container
+        width: 100%
+        nav
+            width: 100%
+        ul
+            display: flex
+            justify-content: space-around
+            align-items: center
+            li
+                a, span.more
+                    display: flex
+                    flex-direction: column
+                    justify-content: center
+                    align-items: center
+                    color: #011d24
+                    cursor: pointer
+                    .icon
+                        font-size: 20px
+                    span
+                        font-size: 12px
+                        margin-top: 5px
+                    &:hover, &.active
+                        color: #C7180C
+    .drop-up-menu
+        position: fixed
+        top: 0
+        left: 0
+        height: 100vh
+        width: 100vw
+        z-index: 10
+        opacity: 0
+        // transition: .35s
+        &.open
+            top: -100vh
+            opacity: 1
+            .navigation
+                max-height: 80%
+                height: 480px
+        .menu-backdrop
+            position: fixed
+            background: rgba(0, 0, 0, .7)
+            height: 100%
+            width: 100%
+            top: 0
+            left: 0
+        .navigation
+            transition: .35s
+            background: white
+            position: fixed
+            bottom: 0
+            left: 0
+            width: 100%
+            height: 0
+            transition: .35s
+            overflow-y: auto
+            z-index: 15
+            border-top-left-radius: 30px
+            border-top-right-radius: 30px
+            &::before
+                content: ""
+                position: absolute
+                top: 20px
+                left: 50%
+                transform: translateX(-50%)
+                border-radius: 3px
+                height: 5px
+                width: 100px
+                background: rgba(0, 0, 0, .3)
+            .nav-header
+                padding: 30px 10% 10px
+                border-bottom: 1px solid rgba(0, 0, 0, .2)
+            nav
+                padding: 20px 10%
+                overflow-y: auto
+                ul
+                    flex-direction: column
+                    align-items: flex-start
+                    li
+                        margin: 15px 0
+                        a
+                            flex-direction: row
+                            align-items: center
+                            .icon
+                                margin-right: 20px
+                            span
+                                margin: 0
+                                font-size: 16px
+                            &.active
+                                color: #011d24
+                            &:hover
+                                color: #C7180C
+
+@media screen and ( min-width: 768px )
+    .menu-bar
+        display: none
+        position: fixed
+        bottom: 20px
+        right: 20px
+        height: 45px
+        width: 50px
+        background: #C7180C
+        box-shadow: 5px 5px 70px rgba(0, 0, 0, .8)
+        border-radius: 5px
+        display: block
+        justify-content: center
+        align-items: center
+        z-index: 9
+        transform: translateY(250%)
+        transition: .6s
+        &.revealed
+            transform: translateY(0)
+            display: block
+            display: none
+        .burger
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            cursor: pointer
+            height: 45px
+            width: 50px
+            display: none
+            span
+                height: 2px
+                width: 25px
+                background: white
+                position: relative
+                &::before, &::after
+                    content: ""
+                    position: absolute
+                    height: 2px
+                    width: 20px
+                    background: white
+                    right: 0
+                    top: 7px
+                &::before
+                    top: -7px
+                    width: 30px
+        .nav-container
+            width: 0
+            display: none
+            overflow: hidden
+            &.menu-open
+                width: 500px
+                position: fixed
+                left: 70px
+
+            nav
+                width: 100%
+            ul
+                display: flex
+                justify-content: space-around
+                align-items: center
+                li
+                    a, span.more
+                        display: flex
+                        flex-direction: column
+                        justify-content: center
+                        align-items: center
+                        color: #011d24
+                        cursor: pointer
+                        .icon
+                            font-size: 17px
+                        span
+                            font-size: 12px
+                            margin-top: 5px
+                        &:hover, &.active
+                            color: #C7180C
+        .drop-up-menu
+            display: none

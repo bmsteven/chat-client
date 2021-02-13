@@ -1,0 +1,141 @@
+.testimonies
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    .intro
+        background: #161825
+        width: 45%
+        border-bottom-right-radius: 120px
+        padding: 60px
+        display: flex
+        align-items: center
+        padding-left: 10%
+        h1
+            font-size: clamp(40px, 4vw, 60px)
+            color: white
+            position: relative
+            padding: 15px 0
+            &::before
+                content: ""
+                position: absolute
+                top: -15px
+                left: 0
+                height: 10px
+                width: 100px
+                background: red
+    .stories
+        width: 55%
+        .showcase
+            // display: flex
+            padding: 50px 5% 50px 50px
+            .swiper-container
+                // padding-bottom: 70px
+                .swiper-pagination
+                    position: absolute
+                    bottom: 0px
+                    height: 25px
+                    width: 100%
+                    right: 20%
+                    display: flex
+                    justify-content: flex-end
+                    // z-index: 5
+                    span.swiper-pagination-bullet
+                        height: 13px
+                        width: 13px
+                        border-radius: 50%
+                        margin-right: 15px
+                        // background: red
+                        border: 3px solid red
+                        cursor: pointer
+                        &.swiper-pagination-bullet-active, &:hover
+                            background: red
+                .swiper-wrapper
+                    padding-bottom: 70px
+                    .swiper-slide
+                        article
+                            padding: 30px 30px
+                            display: flex
+                            position: relative
+                            .home-content
+                                width: calc( 100% - 150px )
+                                background: #FBFBFB
+                                margin: 0
+                                margin-right: 25px
+                                box-shadow: 0 0 30px rgba(0, 0, 0, .2)
+                                &::before
+                                    border-left: 20px solid  #FBFBFB
+                                p
+                                    line-height: 28px
+                                    font-size: 18px
+                                    // color: #acb0b5
+                                    .icon
+                                        margin-right: 5px
+                                        margin-bottom: 4px
+                                        color: red
+                                h3
+                                    margin-top: 15px
+                            .dp
+                                width: 60px
+                                height: 60px
+                                overflow: hidden
+                                border-radius: 50%
+                                position: relative
+                                top: 20px
+                                img
+                                    height: 100%
+                                    width: 100%
+                                    object-fit: cover
+
+@media screen and ( max-width: 768px )
+    .testimonies
+        .intro
+            background: #161825
+            width: 98%
+            border-bottom-right-radius: 120px
+            padding: 120px 5% 60px
+            display: flex
+            align-items: center
+            padding-left: 5%
+            h1
+                font-size: clamp(40px, 4vw, 60px)
+                color: white
+                position: relative
+                padding: 15px 0
+                &::before
+                    content: ""
+                    position: absolute
+                    top: -15px
+                    left: 0
+                    height: 10px
+                    width: 100px
+                    background: red
+        .stories
+            width: 100%
+            .showcase
+                padding: 50px 0 50px
+                .swiper-container
+                    .swiper-pagination
+                        right: 7%
+                    .swiper-wrapper
+                        // padding-bottom: 70px
+                        .swiper-slide
+                            article
+                                padding: 0 20px
+                                width: 100%
+                                display: flex
+                                position: relative
+                                .home-content
+                                    width: 100%
+                                    margin-top: 80px
+                                    &::before
+                                        left: 7%
+                                        top: -35px
+                                        right: 90%
+                                        border-bottom: 20px solid  #FBFBFB
+                                        border-right: 20px solid transparent
+                                        border-left: 20px solid transparent
+                                .dp
+                                    position: absolute
+                                    top: 0
+                                    left: 8%
+                                    right: 90%

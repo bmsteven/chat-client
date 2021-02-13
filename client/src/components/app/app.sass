@@ -1,0 +1,143 @@
+.app
+    background: #161825
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    .app-details
+        padding: 40px 60px 40px 10%
+        width: 50%
+        display: flex
+        flex-direction: column
+        justify-content: center
+        color: white
+        h2
+            font-size: clamp(36px, 2vw, 54px)
+            display: flex
+            align-items: center
+            position: relative
+            font-family: "Gabriella"
+            .icon
+                color: #747474
+                margin-right: 20px
+                position: absolute
+                left: -45px
+                font-size: 35px
+        .home-content
+            margin-bottom: 50px
+            p
+                line-height: 28px
+                font-size: 18px
+                color: #acb0b5
+            a
+                padding: 10px 0
+                display: inline-flex
+                color: #ff3636
+                text-decoration: underline
+                &:hover
+                    text-decoration: none
+        .btns
+            display: flex
+            a
+                margin-right: 15px
+                background: white
+                color: black
+                display: inline-flex
+                justify-content: center
+                align-items: center
+                padding-left: 0
+                padding: 7px 20px
+                border-radius: 5px
+                .icon
+                    margin-right: 10px
+    .app-image
+        width: 45%
+        padding: 50px 0
+        // overflow: hidden
+        position: relative
+        &::before, &::after
+            content: ""
+            position: absolute
+            top: 0
+            left: -100px
+            background: #ffffff17
+            height: 150vh
+            width: 150vh
+            border-radius: 50%
+        &::after
+            top: 30px
+            left: -60px
+            background: #ffffff17
+            height: 130vh
+            width: 130vh
+            border-radius: 50%
+
+        img
+            // margin-right: -5%
+            width: auto
+            height: 100%
+
+@media screen and ( max-width: 1080px )
+    .app
+        .app-details
+            padding: 40px 60px 40px 5%
+            width: 50%
+            .home-content
+                margin-bottom: 50px
+                p
+                    line-height: 28px
+                    font-size: 18px
+                    color: #acb0b5
+            .btns
+                a
+                    margin-right: 15px
+                    // width: 180px
+
+                    background: white
+                    color: black
+                    display: inline-flex
+                    justify-content: center
+                    align-items: center
+                    padding-left: 0
+                    padding: 7px 15px
+                    .icon
+                        margin-right: 10px
+        .app-image
+            width: 45%
+            padding: 30px 0
+            // overflow: hidden
+            img
+
+@media screen and ( max-width: 768px )
+    .app
+        .app-details
+            padding: 40px 5% 40px
+            width: 100%
+            h2
+                .icon
+                    position: relative
+                    left: 0
+            .home-content
+                margin-bottom: 50px
+                &::before
+                    right: 20%
+                    transform: translateX(50%)
+                    top: 100%
+                    border-top: 20px solid  #ffffff17
+                    border-left: 20px solid transparent
+                    border-right: 20px solid transparent
+                p
+                    line-height: 28px
+                    font-size: 18px
+                    color: #acb0b5
+            .btns
+                justify-content: center
+                a
+                    margin-right: 0
+                    margin: 7px
+        .app-image
+            width: 100%
+            padding: 30px 5%
+            // overflow: hidden
+            img
+                width: 185%
+                height: auto

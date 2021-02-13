@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&family=Lato:wght@400;700&display=swap')
+
+*
+    padding: 0
+    margin: 0
+    box-sizing: border-box
+
+html
+    background: #EDF6F8
+
+body, html
+    // height: 100%
+    width: 100%
+    overflow-x: hidden
+    scroll-behavior: smooth
+    font-family: 'Gabriela', serif
+    font-family: 'Lato', sans-serif
+
+li
+    list-style: none
+
+a
+    text-decoration: none
+
+button:focus, input:focus, textarea:focus, select:focus
+    outline: none !important
+
+button
+    border: none
+
+.container
+    width: 80%
+    max-width: 1400px
+    margin: auto
+
+form
+    width: 100%
+    .input-group
+        width: 100%
+        padding: 20px 20px
+        display: flex
+        flex-direction: column
+        label
+            margin-bottom: 7px
+            color: #91999A
+            font-size: 14px
+        input, textarea
+            height: 35px
+            border: none
+            border-bottom: 1px solid #2F717C
+            width: 100%
+            transition: .253s
+            &:focus
+                background: #EDF6F8
+        textarea
+            height: 100px
+            resize: none
+    .form-group
+        width: 100%
+        margin: 30px 0
+        label
+            display: flex
+            height: 60px
+            background: #EDF6F8
+            .icon-container
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 60px
+                height: 100%
+                .icon
+                    color: #AAC1C5
+                    font-size: 30px
+            .input-container
+                display: flex
+                flex-direction: column
+                justify-content: space-between
+                width: calc( 100% - 60px )
+                span
+                    padding: 7px 0
+                input
+                    width: 100%
+                    background: none
+                    border: none
+                    padding: 5px 0
+                    border-bottom: 1px solid #0A7688
+                    &::placeholder
+                        color: #86B3BB
+        label:focus
+            background: white
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2)
+    .btns
+        margin: 40px 0
+        width: 100%
+        .btn
+            border-radius: 5px
+            &.btn-primary:focus
+                outline: 1px solid #C7180C !important
+            &.btn-primary, &.btn-secondary
+                width: 100%
+                display: flex
+                justify-content: center
+                align-items: center
+                padding-left: 0
+
+.loading-screen
+    height: 100vh
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .container
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        text-align: center
+        img
+            height: 50px
+            margin-bottom: 30px
+            width: auto
+
+.btn
+    // width: 
+    display: inline-flex
+    justify-content: space-between
+    align-items: center
+    height: 40px
+    font-weight: bold
+    transition: .35s
+    &.btn-primary
+        background: #C7180C
+        color: white
+        padding-left: 20px
+        box-shadow: 0 0 30px rgba(0, 0, 0, .3)
+        span
+            margin-left: 20px
+            width: 40px
+            height: 40px
+            display: flex
+            justify-content: center
+            align-items: center
+            background: #ba7104
+            font-size: 24px
+            color: white
+            transition: .35s
+        &:hover
+            outline: 1px solid #C7180C
+            background: white
+            color: black
+            span
+                padding-left: 10px
+    &.btn-secondary
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15)
+        background: white
+        color: black
+        font-weight: 400
+        &:hover
+            box-shadow: none
+
+.alert-popup
+    padding: 20px 5%
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    display: flex
+    justify-content: space-between
+    align-items: center
+    // height: 
+    &.alert-success
+        background: #D4EDDA
+        color: #155724
+
+.alert
+    padding: 15px
+    width: 100%
+    text-align: center
+    border-radius: 10px
+    &.alert-danger
+        background: #F8D7DA
+        color: #721C24
+
+.lds-ellipsis
+    display: inline-block
+    position: relative
+    width: 80px
+    height: 80px
+
+.lds-ellipsis div
+    position: absolute
+    top: 33px
+    width: 13px
+    height: 13px
+    border-radius: 50%
+    background: #C7180C
+    animation-timing-function: cubic-bezier(0, 1, 1, 0)
+
+.lds-ellipsis div:nth-child(1)
+    left: 8px
+    animation: lds-ellipsis1 0.6s infinite
+
+.lds-ellipsis div:nth-child(2)
+    left: 8px
+    animation: lds-ellipsis2 0.6s infinite
+
+.lds-ellipsis div:nth-child(3)
+    left: 32px
+    animation: lds-ellipsis2 0.6s infinite
+
+.lds-ellipsis div:nth-child(4)
+    left: 56px
+    animation: lds-ellipsis3 0.6s infinite
+
+.cart-container
+    .container
+        display: flex
+        flex-direction: column
+        align-items: center
+.home-content
+    margin: 30px 0
+    background: #ffffff17
+    padding: 35px 25px
+    border-radius: 20px
+    position: relative
+    &::before
+        content: ""
+        position: absolute
+        right: -20px
+        top: 30px
+        border-left: 20px solid  #ffffff17
+        border-top: 20px solid transparent
+        border-bottom: 20px solid transparent
+        // background: #ffffff17
+
+@keyframes lds-ellipsis1
+    0%
+        transform: scale(0)
+    100%
+        transform: scale(1)
+
+@keyframes lds-ellipsis3
+    0%
+        transform: scale(1)
+    100%
+        transform: scale(0)
+
+@keyframes lds-ellipsis2
+    0%
+        transform: translate(0, 0)
+    100%
+        transform: translate(24px, 0)
+
+@media screen and ( max-width: 992px )
+    .container
+        width: 85%
+@media screen and ( max-width: 768px )
+    .container
+        width: 90%
+    .cart-container
+        .container
+            width: 95%
