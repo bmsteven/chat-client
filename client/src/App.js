@@ -1,135 +1,101 @@
-import React, { useEffect, useState, useContext } from "react"
-import { Switch, Route } from "react-router-dom"
-import axios from "axios"
-import { MdClose } from "react-icons/all"
-import { UserContext } from "./context/UserContext"
-import { FoodContext } from "./context/FoodContext"
-
-// styles
-import "./styles/style.sass"
+import React, { useEffect, useState } from "react"
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { gql, useLazyQuery } from "@apollo/client"
+import { useAuthDispatch, useAuthState } from "./context/auth"
 
 // pages
-const Home = React.lazy(() => import("./pages/"))
-const Login = React.lazy(() => import("./pages/auth/Login"))
-const Signup = React.lazy(() => import("./pages/auth/Signup"))
-const About = React.lazy(() => import("./pages/About"))
-const Contact = React.lazy(() => import("./pages/Contact"))
-const Help = React.lazy(() => import("./pages/Help"))
+import Home from "./pages/Home"
+import Register from "./pages/Register"
+import Login from "./pages/Login"
+import VerifyAccount from "./pages/VerifyAccount"
+import Search from "./pages/Search"
+import Profile from "./pages/Profile"
 
-// users
-const Cart = React.lazy(() => import("./pages/user/cart/"))
-const Profile = React.lazy(() => import("./pages/user/Profile"))
-const Favourites = React.lazy(() => import("./pages/user/Favourites"))
-const Order = React.lazy(() => import("./pages/user/Order"))
-const MyOrders = React.lazy(() => import("./pages/user/MyOrders"))
-
-// admin
-const Dashboard = React.lazy(() => import("./pages/dashboard/"))
-const Menu = React.lazy(() => import("./pages/Menu"))
-
-// axios.defaults.baseURL = "http://faraja-food-uber.herokuapp.com/api"
-axios.defaults.baseURL = "http://localhost:5000/api"
+const GET_USER = gql`
+  query auth {
+    auth {
+      id
+      username
+      verified
+      verification_code
+      first_name
+      middle_name
+      last_name
+      bio
+      dp
+      cover_image
+      DOB
+      about
+      gender
+    }
+  }
+`
 
 const App = () => {
-  let [user, setUser] = useContext(UserContext)
-  let [foods, setFoods] = useContext(FoodContext)
-  let [msg, setMsg] = useState(null)
-
+  const [error, setError] = useState(null)
+  const dispatch = useAuthDispatch()
+  const { user } = useAuthState()
+  const [getUser, { loading }] = useLazyQuery(GET_USER, {
+    onError(err) {
+      setError("Internal server error, couldn't load user")
+    },
+    onCompleted(res) {
+      dispatch({ type: "AUTH", payload: res.auth })
+    },
+  })
+  const logout = () => {
+    dispatch({ type: "LOGOUT" })
+  }
   useEffect(() => {
-    let token = localStorage.getItem("token")
-    let config = {
-      headers: {
-        "Content-Type": "application/json",
-        authorization: token,
-      },
-    }
-    axios
-      .get("/auth", config)
-      .then((res) => {
-        if (res.data) {
-          setUser({
-            ...user,
-            isAuthenticated: true,
-            data: res.data.results,
-            loading: false,
-          })
-        }
-      })
-      .catch((err) => {
-        // console.log(err)
-        setUser({
-          ...user,
-          loading: false,
-        })
-      })
-  }, [user])
-
-  // console.log(user)
-  useEffect(() => {
-    let config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-    axios
-      .get("/get-foods", config)
-      .then((res) => {
-        if (res.data) {
-          setFoods({
-            ...foods,
-            loading: false,
-            data: res.data.results,
-          })
-        }
-      })
-      .catch((err) => {
-        setFoods({
-          ...foods,
-          loading: false,
-        })
-        // console.log(err)
-      })
-  }, [foods])
+    getUser()
+  }, [getUser])
   return (
-    <div className="App">
-      {msg && (
-        <div className="alert-popup alert-success">
-          <span>{msg}</span>
-          <span className="close" onClick={() => setMsg("")}>
-            <MdClose className="icon" />
-          </span>
-        </div>
+    <div className="app">
+      {loading ? (
+        "Loading"
+      ) : (
+        <Router>
+          <Link to="/">Home</Link>
+          {user ? (
+            <button onClick={logout}>Logout</button>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="register">Register</Link>
+            </>
+          )}
+
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/verify-account">
+              <VerifyAccount />
+            </Route>
+            <Route path="/verify-account/:slug">
+              <VerifyAccount />
+            </Route>
+            <Route path="/search/:slug">
+              <Search />
+            </Route>
+            <Route path="/search">
+              <Search />
+            </Route>
+            <Route exact path="/p">
+              <Search />
+            </Route>
+            <Route path="/p/:slug">
+              <Profile />
+            </Route>
+          </Switch>
+        </Router>
       )}
-      {/* {loading ? (
-        <div className="loading-screen">
-          <div className="container">
-            <img src={logo} alt="logo" />
-            <span>Please Wait...</span>
-          </div>
-        </div>
-      ) : ( */}
-      <>
-        <Switch>
-          <Route exact path="/" render={() => <Home />} />
-          <Route exact path="/login" render={() => <Login />} />
-          <Route
-            exact
-            path="/signup"
-            render={() => <Signup setMsg={setMsg} />}
-          />
-          <Route exact path="/menu" render={() => <Menu />} />
-          <Route path="/cart" render={() => <Cart />} />
-          <Route path="/order/:slug" render={() => <Order />} />
-          {/* auth routes */}
-          <Route path="/dashboard" render={() => <Dashboard />} />
-          <Route path="/my-orders/" render={() => <MyOrders />} />
-          <Route exact path="/profile" render={() => <Profile />} />
-          <Route exact path="/favourites" render={() => <Favourites />} />
-          <Route exact path="/about" render={() => <About />} />
-          <Route exact path="/contact" render={() => <Contact />} />
-          <Route exact path="/help" render={() => <Help />} />
-        </Switch>
-      </>
     </div>
   )
 }
