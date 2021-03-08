@@ -6,12 +6,17 @@ const AuthDispatchContext = createContext()
 
 const authReducer = (state, action) => {
   let { type, payload } = action
+  state = {
+    user: null,
+    userLoading: true,
+  }
   switch (type) {
     case "LOGIN":
       Cookies.set("token", payload.token, { expires: 365 })
       console.log(payload)
       return {
         ...state,
+        userLoading: false,
         isAuthenticated: payload.verified === true ? true : false,
       }
     case "REGISTER":
@@ -19,12 +24,14 @@ const authReducer = (state, action) => {
       console.log(payload)
       return {
         ...state,
+        userLoading: false,
         isAuthenticated: payload.verified === true ? true : false,
       }
     case "VERIFY_ACCOUNT":
       Cookies.set("token", payload.token, { expires: 365 })
       return {
         ...state,
+        userLoading: false,
         isAuthenticated: payload.verified === true ? true : false,
       }
     case "LOGOUT":
@@ -32,11 +39,13 @@ const authReducer = (state, action) => {
       return {
         ...state,
         user: null,
+        userLoading: false,
         isAuthenticated: false,
       }
     case "AUTH":
       return {
         ...state,
+        userLoading: false,
         user: payload,
         isAuthenticated: payload.verified === true ? true : false,
       }

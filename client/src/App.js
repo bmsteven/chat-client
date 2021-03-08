@@ -10,6 +10,13 @@ import Login from "./pages/Login"
 import VerifyAccount from "./pages/VerifyAccount"
 import Search from "./pages/Search"
 import Profile from "./pages/Profile"
+import Followers from "./pages/Followers"
+import Followings from "./pages/Followings"
+import Connections from "./pages/Connections"
+import UserProfile from "./pages/UserProfile"
+import ConnectionsRequests from "./pages/ConnectionsRequests"
+import MyRequests from "./pages/MyRequests"
+import Chats from "./pages/chats/Chats"
 
 const GET_USER = gql`
   query auth {
@@ -40,7 +47,7 @@ const App = () => {
       setError("Internal server error, couldn't load user")
     },
     onCompleted(res) {
-      dispatch({ type: "AUTH", payload: res.auth })
+      dispatch({ type: "AUTH", payload: res.auth, loading })
     },
   })
   const logout = () => {
@@ -55,16 +62,19 @@ const App = () => {
         "Loading"
       ) : (
         <Router>
-          <Link to="/">Home</Link>
+          <Link to="/">Home</Link>{" "}
           {user ? (
-            <button onClick={logout}>Logout</button>
+            <>
+              <Link to="/user/profile">View Profile</Link>{" "}
+              <Link to="/chats">Chats</Link>{" "}
+              <button onClick={logout}>Logout</button>{" "}
+            </>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>{" "}
+              <Link to="/register">Register</Link>{" "}
             </>
           )}
-
           <Switch>
             <Route exact path="/">
               <Home />
@@ -92,6 +102,30 @@ const App = () => {
             </Route>
             <Route path="/p/:slug">
               <Profile />
+            </Route>
+            <Route path="/connections/:slug">
+              <Connections />
+            </Route>
+            <Route path="/followers/:slug">
+              <Followers />
+            </Route>
+            <Route path="/followings/:slug">
+              <Followings />
+            </Route>
+            <Route path="/user/profile">
+              <UserProfile />
+            </Route>
+            <Route path="/user">
+              <UserProfile />
+            </Route>
+            <Route path="/requests">
+              <ConnectionsRequests />
+            </Route>
+            <Route path="/my-requests">
+              <MyRequests />
+            </Route>
+            <Route path="/chats">
+              <Chats />
             </Route>
           </Switch>
         </Router>

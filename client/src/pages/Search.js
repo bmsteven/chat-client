@@ -79,7 +79,11 @@ const Search = () => {
                       title,
                       id,
                     }) => (
-                      <div key={username}>
+                      <div key={username} style={{
+                        padding: "1em",
+                        margin: "2em",
+                        border: "1px solid gray"
+                      }}>
                         <Link
                           to={{ pathname: `/p/${username}`, state: { id } }}
                         >

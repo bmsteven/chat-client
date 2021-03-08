@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { useLocation, Link } from "react-router-dom"
 import { gql, useLazyQuery, useMutation } from "@apollo/client"
 import { useAuthState } from "../context/auth"
-// import { useParams } from "react-router-dom"
 
 const USER = gql`
   query getUser($id: Int!) {
@@ -38,7 +37,10 @@ const GET_CONNECTIONS_COUNT = gql`
 `
 const CHECK_CONNECTION = gql`
   query checkConnection($id: Int!) {
-    checkConnection(id: $id)
+    checkConnection(id: $id) {
+      value
+      status
+    }
   }
 `
 
@@ -71,18 +73,32 @@ const REQUEST_CONNECTION = gql`
     }
   }
 `
+const BLOCK_USER = gql`
+  mutation requestConnection($userId: Int!) {
+    requestConnection(userId: $userId) {
+      id
+    }
+  }
+`
+
+const UBLOCK_USER = gql`
+  mutation blockUser($userId: Int!) {
+    blockUser(userId: $userId) {
+      id
+    }
+  }
+`
 
 const Profile = () => {
-  //   let username = useParams().slug
   let [userData, setUserData] = useState({})
   const { user } = useAuthState()
   const [userCheck, setUserCheck] = useState({
     isFollowing: false,
     isConnected: false,
+    connectionStatus: "",
   })
   let data = useLocation()
   let id = data.state.id
-  //   console.log(user)
   let [errors, setErrors] = useState({})
   const [getUserData, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted(res) {
@@ -126,18 +142,26 @@ const Profile = () => {
       console.log(err)
     },
   })
-  const [checkUserConnection] = useLazyQuery(CHECK_CONNECTION, {
-    onCompleted(res) {
-      //   console.log(res)
-      setUserCheck({ ...userCheck, isConnected: res.checkConnection })
-    },
-    onError(err) {
-      console.log(err)
-    },
-  })
+  const [checkUserConnection, { loading: connectionLoading }] = useLazyQuery(
+    CHECK_CONNECTION,
+    {
+      onCompleted(res) {
+        // console.log(res.checkConnection)
+        // console.log(userCheck)
+        setUserCheck({
+          ...userCheck,
+          isConnected: res.checkConnection.status,
+          connectionStatus: res.checkConnection.status,
+        })
+      },
+      onError(err) {
+        console.log(err)
+      },
+    }
+  )
   const [checkUserFollowing] = useLazyQuery(CHECK_FOLLOWING, {
     onCompleted(res) {
-      //   console.log(res)
+      // console.log(res)
       setUserCheck({ ...userCheck, isFollowing: res.checkFollowing })
     },
     onError(err) {
@@ -148,32 +172,36 @@ const Profile = () => {
     onError(err) {
       console.log(err)
     },
-    onCompleted(_, res) {
-      //   console.log(res)
-      setUserData({
-        ...userData,
-        followers: parseInt(userData.followers) + 1,
-      })
-      setUserCheck({
-        ...userCheck,
-        isFollowing: true,
-      })
+    update(_, res) {
+      // console.log(res)
+      if (res) {
+        setUserData({
+          ...userData,
+          followers: parseInt(userData.followers) + 1,
+        })
+        setUserCheck({
+          ...userCheck,
+          isFollowing: true,
+        })
+      }
     },
   })
   const [unfollowUser, { loading: unfollowLoading }] = useMutation(UNFOLLOW, {
     onError(err) {
       console.log(err)
     },
-    onCompleted(_, res) {
-      //   console.log(res)
-      setUserData({
-        ...userData,
-        followers: parseInt(userData.followers) - 1,
-      })
-      setUserCheck({
-        ...userCheck,
-        isFollowing: false,
-      })
+    update(_, res) {
+      // console.log(res)
+      if (res) {
+        setUserData({
+          ...userData,
+          followers: parseInt(userData.followers) - 1,
+        })
+        setUserCheck({
+          ...userCheck,
+          isFollowing: false,
+        })
+      }
     },
   })
   const [connectUser, { loading: connectLoading }] = useMutation(
@@ -182,11 +210,12 @@ const Profile = () => {
       onError(err) {
         console.log(err)
       },
-      onCompleted(_, res) {
-        console.log(res)
+      update(_, res) {
+        // console.log(res)
         setUserCheck({
           ...userCheck,
           isConnected: true,
+          connectionStatus: "Request",
         })
       },
     }
@@ -214,7 +243,7 @@ const Profile = () => {
   }, [])
   useEffect(() => {
     checkUserConnection({ variables: { id } })
-  }, [])
+  }, [checkUserConnection])
   useEffect(() => {
     checkUserFollowing({ variables: { id } })
   }, [])
@@ -245,32 +274,80 @@ const Profile = () => {
                     <>0 followers</>
                   ) : (
                     userData.followers > 0 && (
-                      <Link to="/">{userData.followers} followers</Link>
+                      <Link
+                        to={{
+                          pathname: `/followers/${userData.user_info.username}`,
+                          state: { id, user: userData.user_info },
+                        }}
+                      >
+                        {userData.followers} followers
+                      </Link>
                     )
                   )}{" "}
                   {userData.followings === 0 ? (
                     <>0 followings</>
                   ) : (
                     userData.followings > 0 && (
-                      <Link to="/">{userData.followings} Followings</Link>
+                      <Link
+                        to={{
+                          pathname: `/followings/${userData.user_info.username}`,
+                          state: { id, user: userData.user_info },
+                        }}
+                      >
+                        {userData.followings} Followings
+                      </Link>
                     )
                   )}{" "}
                   {userData.connections === 0 ? (
                     <>0 connections</>
                   ) : (
                     userData.connections > 0 && (
-                      <Link to="/">{userData.connections} Connections</Link>
+                      <Link
+                        to={{
+                          pathname: `/connections/${userData.user_info.username}`,
+                          state: { id, user: userData.user_info },
+                        }}
+                      >
+                        {userData.connections} Connections
+                      </Link>
                     )
                   )}{" "}
                   {user && id !== user.id && (
                     <>
                       {userCheck.isFollowing ? (
-                        <button onClick={unfollow}>Unfollow</button>
+                        <button onClick={unfollow} disabled={unfollowLoading}>
+                          {unfollowLoading ? "Please wait" : "Unfollow"}
+                        </button>
                       ) : (
-                        <button onClick={follow}>Follow</button>
+                        <button onClick={follow} disabled={followLoading}>
+                          {followLoading ? "Please wait" : "Follow"}
+                        </button>
                       )}{" "}
-                      {userCheck.isConnected ? null : (
-                        <button onClick={connect}>Connect</button>
+                      {connectionLoading ? (
+                        <></>
+                      ) : (
+                        <>
+                          {userCheck.isConnected ? (
+                            <>
+                              {userCheck.connectionStatus === "B" ? (
+                                <button>Unblock</button>
+                              ) : (
+                                <>
+                                  {userCheck.connectionStatus === "A" && (
+                                    <button>Block</button>
+                                  )}
+                                  {userCheck.connectionStatus === "Request" && (
+                                    <p>Requested Connection sent</p>
+                                  )}
+                                </>
+                              )}
+                            </>
+                          ) : (
+                            <button onClick={connect} disabled={connectLoading}>
+                              {connectLoading ? "Please wait" : "Connect"}
+                            </button>
+                          )}
+                        </>
                       )}
                     </>
                   )}
@@ -285,3 +362,5 @@ const Profile = () => {
 }
 
 export default Profile
+
+// todo solve follow/unfollow bug

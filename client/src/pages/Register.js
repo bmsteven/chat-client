@@ -50,9 +50,7 @@ const Register = (props) => {
       // authenticate user here
       if (res) {
         dispatch({ type: "REGISTER", payload: res.data.register })
-        props.history.push(
-          `/verify-account/user_account?verified=${res.data.register.verified}`
-        )
+        window.location.href = `/verify-account/user_account?verified=${res.data.register.verified}`
       }
     },
     onError(err) {
