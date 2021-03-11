@@ -1,7 +1,6 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import { useAuthState, useAuthDispatch } from "../context/auth"
-
+import RelatedUsers from "../components/user/RelatedUsers"
 import Input from "../components/input/Input"
 import FormButton from "../components/form_button/FormButton"
 
@@ -36,6 +35,7 @@ const Home = () => {
         />
         <FormButton text="Search" />
       </form>
+      <RelatedUsers />
     </div>
   )
 }

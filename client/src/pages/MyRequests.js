@@ -40,7 +40,7 @@ const MyRequests = () => {
             <>
               <h2>My requests</h2>
               {requests.map((userData) => (
-                <MyRequest userData={userData} />
+                <MyRequest userData={userData} key={userData.id} />
               ))}
             </>
           ) : (

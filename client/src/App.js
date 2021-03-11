@@ -1,22 +1,44 @@
 import React, { useEffect, useState } from "react"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from "react-router-dom"
 import { gql, useLazyQuery } from "@apollo/client"
 import { useAuthDispatch, useAuthState } from "./context/auth"
 
 // pages
-import Home from "./pages/Home"
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import VerifyAccount from "./pages/VerifyAccount"
-import Search from "./pages/Search"
-import Profile from "./pages/Profile"
-import Followers from "./pages/Followers"
-import Followings from "./pages/Followings"
-import Connections from "./pages/Connections"
-import UserProfile from "./pages/UserProfile"
-import ConnectionsRequests from "./pages/ConnectionsRequests"
-import MyRequests from "./pages/MyRequests"
-import Chats from "./pages/chats/Chats"
+// import Home from "./pages/Home"
+// import Register from "./pages/Register"
+// import Login from "./pages/Login"
+// import VerifyAccount from "./pages/VerifyAccount"
+// import Search from "./pages/Search"
+// import Profile from "./pages/Profile"
+// import Followers from "./pages/Followers"
+// import Followings from "./pages/Followings"
+// import Connections from "./pages/Connections"
+// import UserProfile from "./pages/UserProfile"
+// import ConnectionsRequests from "./pages/ConnectionsRequests"
+// import MyRequests from "./pages/MyRequests"
+// import Chats from "./pages/chats/Chats"
+
+const Home = React.lazy(() => import("./pages/Home"))
+const Register = React.lazy(() => import("./pages/Register"))
+const Login = React.lazy(() => import("./pages/Login"))
+const VerifyAccount = React.lazy(() => import("./pages/VerifyAccount"))
+const Search = React.lazy(() => import("./pages/Search"))
+const Profile = React.lazy(() => import("./pages/Profile"))
+const Followers = React.lazy(() => import("./pages/Followers"))
+const Followings = React.lazy(() => import("./pages/Followings"))
+const Connections = React.lazy(() => import("./pages/Connections"))
+const UserProfile = React.lazy(() => import("./pages/UserProfile"))
+const ConnectionsRequests = React.lazy(() =>
+  import("./pages/ConnectionsRequests")
+)
+const MyRequests = React.lazy(() => import("./pages/MyRequests"))
+const Chats = React.lazy(() => import("./pages/chats/Chats"))
 
 const GET_USER = gql`
   query auth {
@@ -41,17 +63,22 @@ const GET_USER = gql`
 const App = () => {
   const [error, setError] = useState(null)
   const dispatch = useAuthDispatch()
-  const { user } = useAuthState()
+  const { user, isAuthenticated, userLoading } = useAuthState()
+  console.log(user, userLoading)
+  let history = useHistory()
   const [getUser, { loading }] = useLazyQuery(GET_USER, {
     onError(err) {
       setError("Internal server error, couldn't load user")
     },
     onCompleted(res) {
-      dispatch({ type: "AUTH", payload: res.auth, loading })
+      dispatch({ type: "AUTH", payload: res.auth })
     },
   })
   const logout = () => {
     dispatch({ type: "LOGOUT" })
+  }
+  const goBack = () => {
+    history.goBack()
   }
   useEffect(() => {
     getUser()
@@ -75,58 +102,33 @@ const App = () => {
               <Link to="/register">Register</Link>{" "}
             </>
           )}
+          <button onClick={goBack}>Go back</button>
           <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/verify-account">
-              <VerifyAccount />
-            </Route>
-            <Route path="/verify-account/:slug">
-              <VerifyAccount />
-            </Route>
-            <Route path="/search/:slug">
-              <Search />
-            </Route>
-            <Route path="/search">
-              <Search />
-            </Route>
-            <Route exact path="/p">
-              <Search />
-            </Route>
-            <Route path="/p/:slug">
-              <Profile />
-            </Route>
-            <Route path="/connections/:slug">
-              <Connections />
-            </Route>
-            <Route path="/followers/:slug">
-              <Followers />
-            </Route>
-            <Route path="/followings/:slug">
-              <Followings />
-            </Route>
-            <Route path="/user/profile">
-              <UserProfile />
-            </Route>
-            <Route path="/user">
-              <UserProfile />
-            </Route>
-            <Route path="/requests">
-              <ConnectionsRequests />
-            </Route>
-            <Route path="/my-requests">
-              <MyRequests />
-            </Route>
-            <Route path="/chats">
-              <Chats />
-            </Route>
+            <Route exact path="/" render={() => <Home />} />
+
+            <Route path="/register" render={() => <Register />} />
+
+            <Route path="/login" render={() => <Login />} />
+
+            <Route path="/verify-account" render={() => <VerifyAccount />} />
+            <Route
+              path="/verify-account/:slug"
+              render={() => <VerifyAccount />}
+            />
+
+            <Route path="/search/:slug" render={() => <Search />} />
+
+            <Route path="/search" render={() => <Search />} />
+            <Route exact path="/p" render={() => <Search />} />
+            <Route path="/p/:slug" render={() => <Profile />} />
+            <Route path="/connections/:slug" render={() => <Connections />} />
+            <Route path="/followers/:slug" render={() => <Followers />} />
+            <Route path="/followings/:slug" render={() => <Followings />} />
+            <Route path="/user/profile" render={() => <UserProfile />} />
+            <Route path="/user" render={() => <UserProfile />} />
+            <Route path="/requests" render={() => <ConnectionsRequests />} />
+            <Route path="/my-requests" render={() => <MyRequests />} />
+            <Route path="/chats" render={() => <Chats />} />
           </Switch>
         </Router>
       )}

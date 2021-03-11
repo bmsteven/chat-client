@@ -347,6 +347,19 @@ const Profile = () => {
                               {connectLoading ? "Please wait" : "Connect"}
                             </button>
                           )}
+                          <Link
+                            to={{
+                              pathname: `/chats/${userData.user_info.username}`,
+                              state: {
+                                id,
+                                username: userData.user_info.username,
+                                dp: userData.user_info.dp,
+                                status: userData.user_info.status,
+                              },
+                            }}
+                          >
+                            Message
+                          </Link>
                         </>
                       )}
                     </>

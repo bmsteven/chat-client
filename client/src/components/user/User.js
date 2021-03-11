@@ -96,19 +96,22 @@ const User = ({ follower }) => {
     }
   )
 
-  const [checkUserConnection] = useLazyQuery(CHECK_CONNECTION, {
-    onCompleted(res) {
-      console.log(res)
-      setUserCheck({
-        ...userCheck,
-        isConnected: res.checkConnection.status,
-        connectionStatus: res.checkConnection.status,
-      })
-    },
-    onError(err) {
-      console.log(err)
-    },
-  })
+  const [checkUserConnection, { loading: checkLoading }] = useLazyQuery(
+    CHECK_CONNECTION,
+    {
+      onCompleted(res) {
+        console.log(res)
+        setUserCheck({
+          ...userCheck,
+          isConnected: res.checkConnection.value,
+          connectionStatus: res.checkConnection.status,
+        })
+      },
+      onError(err) {
+        console.log(err)
+      },
+    }
+  )
   const [checkUserFollowing] = useLazyQuery(CHECK_FOLLOWING, {
     onCompleted(res) {
       console.log(res)
@@ -157,23 +160,31 @@ const User = ({ follower }) => {
               {followLoading ? "Please wait" : "Follow"}
             </button>
           )}{" "}
-          {userCheck.isConnected ? (
+          {checkLoading ? (
+            <></>
+          ) : (
             <>
-              {userCheck.connectionStatus === "B" ? (
-                <button>Unblock</button>
-              ) : (
+              {userCheck.isConnected ? (
                 <>
-                  {userCheck.connectionStatus === "A" && <button>Block</button>}
-                  {userCheck.connectionStatus === "Request" && (
-                    <p>Requested Connection sent</p>
+                  {userCheck.connectionStatus === "B" ? (
+                    <button>Unblock</button>
+                  ) : (
+                    <>
+                      {userCheck.connectionStatus === "A" && (
+                        <button>Block</button>
+                      )}
+                      {userCheck.connectionStatus === "Request" && (
+                        <p>Requested Connection sent</p>
+                      )}
+                    </>
                   )}
                 </>
+              ) : (
+                <button onClick={connect} disabled={connectLoading}>
+                  {connectLoading ? "Please wait" : "Connect"}
+                </button>
               )}
             </>
-          ) : (
-            <button onClick={connect} disabled={connectLoading}>
-              {connectLoading ? "Please wait" : "Connect"}
-            </button>
           )}
         </>
       )}
