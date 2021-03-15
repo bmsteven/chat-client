@@ -44,7 +44,7 @@ const Followers = () => {
   )
   const [getUserFollowersCount] = useLazyQuery(GET_FOLLOWERS_COUNT, {
     onCompleted(res) {
-      console.log(res)
+      // console.log(res)
       setFollowersCount(res.getFollowersCount)
     },
     onError(err) {

@@ -9,21 +9,6 @@ import {
 import { gql, useLazyQuery } from "@apollo/client"
 import { useAuthDispatch, useAuthState } from "./context/auth"
 
-// pages
-// import Home from "./pages/Home"
-// import Register from "./pages/Register"
-// import Login from "./pages/Login"
-// import VerifyAccount from "./pages/VerifyAccount"
-// import Search from "./pages/Search"
-// import Profile from "./pages/Profile"
-// import Followers from "./pages/Followers"
-// import Followings from "./pages/Followings"
-// import Connections from "./pages/Connections"
-// import UserProfile from "./pages/UserProfile"
-// import ConnectionsRequests from "./pages/ConnectionsRequests"
-// import MyRequests from "./pages/MyRequests"
-// import Chats from "./pages/chats/Chats"
-
 const Home = React.lazy(() => import("./pages/Home"))
 const Register = React.lazy(() => import("./pages/Register"))
 const Login = React.lazy(() => import("./pages/Login"))
@@ -64,7 +49,6 @@ const App = () => {
   const [error, setError] = useState(null)
   const dispatch = useAuthDispatch()
   const { user, isAuthenticated, userLoading } = useAuthState()
-  console.log(user, userLoading)
   let history = useHistory()
   const [getUser, { loading }] = useLazyQuery(GET_USER, {
     onError(err) {

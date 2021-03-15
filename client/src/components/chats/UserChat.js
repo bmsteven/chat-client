@@ -4,7 +4,7 @@ import moment from "moment"
 
 const UserChat = ({ user }) => {
   const { username, id, dp, status, latestMessage } = user
-  console.log(latestMessage)
+  // console.log(latestMessage)
   return (
     <li
       key={id}

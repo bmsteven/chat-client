@@ -327,7 +327,7 @@ const Profile = () => {
                         <></>
                       ) : (
                         <>
-                          {userCheck.isConnected ? (
+                          {userCheck.isConnected === false ? (
                             <>
                               {userCheck.connectionStatus === "B" ? (
                                 <button>Unblock</button>

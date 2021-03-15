@@ -44,7 +44,7 @@ const Connections = () => {
   )
   const [getUserConnectionsCount] = useLazyQuery(GET_CONNECTIONS_COUNT, {
     onCompleted(res) {
-      console.log(res)
+      // console.log(res)
       setConnectionsCount(res.getConnectionsCount)
     },
     onError(err) {

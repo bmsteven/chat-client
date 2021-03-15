@@ -26,13 +26,11 @@ const SEND_MESSAGE = gql`
   }
 `
 
-const SendMessage = ({ id, setMessages, messages }) => {
-  const [content, setContent] = useState(null)
+const SendMessage = ({ id }) => {
+  const [content, setContent] = useState("")
 
   const [sendMessage, { loading }] = useMutation(SEND_MESSAGE, {
     onCompleted(res) {
-      console.log(res)
-      setMessages([...messages, res.sendMessage])
       setContent("")
     },
     onError(err) {
@@ -60,11 +58,13 @@ const SendMessage = ({ id, setMessages, messages }) => {
         left: "0",
         background: "white",
         width: "100%",
+        maxWidth: "100%",
         textAlign: "center",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: "20px",
+        margin: "auto",
       }}
     >
       <form
@@ -72,6 +72,8 @@ const SendMessage = ({ id, setMessages, messages }) => {
         style={{
           display: "flex",
           alignItems: "center",
+          width: "100%",
+          justifyContent: "center",
         }}
       >
         <textarea
@@ -81,6 +83,7 @@ const SendMessage = ({ id, setMessages, messages }) => {
           value={content}
           style={{
             width: "500px",
+            display: "block",
             maxWidth: "80%",
             height: "70px",
           }}

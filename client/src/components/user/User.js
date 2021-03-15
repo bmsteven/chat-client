@@ -56,7 +56,7 @@ const User = ({ follower }) => {
       console.log(err)
     },
     update(_, res) {
-      console.log(res)
+      // console.log(res)
       if (res) {
         setUserCheck({
           ...userCheck,
@@ -70,7 +70,7 @@ const User = ({ follower }) => {
       console.log(err)
     },
     update(_, res) {
-      console.log(res)
+      // console.log(res)
       if (res) {
         setUserCheck({
           ...userCheck,
@@ -86,7 +86,7 @@ const User = ({ follower }) => {
         console.log(err)
       },
       update(_, res) {
-        console.log(res)
+        // console.log(res)
         setUserCheck({
           ...userCheck,
           isConnected: true,
@@ -100,7 +100,7 @@ const User = ({ follower }) => {
     CHECK_CONNECTION,
     {
       onCompleted(res) {
-        console.log(res)
+        // console.log(res)
         setUserCheck({
           ...userCheck,
           isConnected: res.checkConnection.value,
@@ -114,7 +114,7 @@ const User = ({ follower }) => {
   )
   const [checkUserFollowing] = useLazyQuery(CHECK_FOLLOWING, {
     onCompleted(res) {
-      console.log(res)
+      // console.log(res)
       setUserCheck({ ...userCheck, isFollowing: res.checkFollowing })
     },
     onError(err) {

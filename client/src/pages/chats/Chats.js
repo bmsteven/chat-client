@@ -1,8 +1,9 @@
 import React, { useState, useLayoutEffect, Suspense } from "react"
-import { Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { gql, useLazyQuery } from "@apollo/client"
 import PageLoader from "../../components/pageloader/PageLoader"
 import { useAuthState } from "../../context/auth"
+import { useChatsDispatch, useChatsState } from "../../context/chats"
 import Header from "../../components/chats/Header"
 import "../../styles/chat.sass"
 
@@ -25,12 +26,15 @@ const GET_CHATS = gql`
 `
 
 const Chats = () => {
-  const [chats, setChats] = useState([])
+  const { chats } = useChatsState()
+  const dispatch = useChatsDispatch()
   const { user, userLoading } = useAuthState()
   const [getChats, { loading }] = useLazyQuery(GET_CHATS, {
     onCompleted(res) {
-      console.log(res)
-      setChats(res.getUserChats)
+      dispatch({
+        type: "LOAD_CHATS",
+        payload: res.getUserChats,
+      })
     },
     onError(err) {
       console.log(err)
@@ -39,7 +43,7 @@ const Chats = () => {
 
   useLayoutEffect(() => {
     getChats()
-  }, [setChats, getChats, chats])
+  }, [])
   return (
     <div>
       {userLoading ? (

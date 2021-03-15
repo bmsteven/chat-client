@@ -38,7 +38,7 @@ const UserRequest = ({ userData }) => {
       console.log(err)
     },
     update(_, res) {
-      console.log(res)
+      // console.log(res)
       if (res) {
         setUserCheck({
           ...userCheck,
@@ -53,7 +53,7 @@ const UserRequest = ({ userData }) => {
       console.log(err)
     },
     update(_, res) {
-      console.log(res)
+      // console.log(res)
       if (res) {
         setUserCheck({
           ...userCheck,

@@ -67,7 +67,7 @@ const Chat = () => {
   let { id, username, status, dp } = data.state
   const [getUserData, { loading: userLoader }] = useLazyQuery(GET_USER, {
     onCompleted(res) {
-      console.log(res)
+      // console.log(res)
       setUserData({ ...userData, user: res.getUser })
       //   console.log(userData.user)
     },
@@ -79,7 +79,7 @@ const Chat = () => {
     GET_MESSAGES,
     {
       onCompleted(res) {
-        console.log(res)
+        // console.log(res)
         setMessages(res.getMessages)
       },
       onError(err) {
@@ -108,7 +108,7 @@ const Chat = () => {
 
   const [acceptChat, { loading: acceptLoading }] = useMutation(ACCEPT_CHAT, {
     onCompleted(_, res) {
-      console.log(res)
+      // console.log(res)
       setUserData({
         ...userData,
         status: true,
@@ -122,7 +122,7 @@ const Chat = () => {
 
   const [rejectChat, { loading: rejectLoading }] = useMutation(REJECT_CHAT, {
     onCompleted(_, res) {
-      console.log(res)
+      // console.log(res)
       setUserData({
         ...userData,
         status: false,
@@ -147,6 +147,9 @@ const Chat = () => {
   useEffect(() => {
     getUserMessages({ variables: { id } })
   }, [])
+  useEffect(() => {
+    window.scrollTo(0, 10000)
+  })
   return (
     <div>
       <>
@@ -176,18 +179,16 @@ const Chat = () => {
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
-                flexWrap: "wrap",
+                // flexWrap: "wrap",
+                flexDirection: "column-reverse",
                 width: "600px",
                 maxWidth: "100%",
                 margin: "auto",
                 background: "#F2F2F2",
                 position: "relative",
                 marginBottom: "100px",
-                // overflowY: "scroll",
                 bottom: "0",
-                // left: "50%",
-                // transform: "translateX(-50%)",
-                // position: "absolute",
+                padding: "30px",
               }}
             >
               {messages.map((message) => (
