@@ -1,31 +1,22 @@
 import React, { useState } from "react"
-import { gql, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { useAuthState, useAuthDispatch } from "../context/auth"
 import Input from "../components/input/Input"
 import FormButton from "../components/form_button/FormButton"
-
-const VERIFY_ACCOUNT = gql`
-  mutation verifyAccount($code: Int!) {
-    verifyAccount(code: $code) {
-      verified
-      token
-    }
-  }
-`
+import { VERIFY_ACCOUNT } from "../graphql/mutations"
+import "../styles/auth.sass"
 
 const VerifyAccount = () => {
   const { user } = useAuthState()
   const dispatch = useAuthDispatch()
-  const [variables, setVariables] = useState({
-    code: "",
-  })
+  const [code, setCode] = useState("")
 
   const [errors, setErrors] = useState({})
   const [verifyUserAccount, { loading }] = useMutation(VERIFY_ACCOUNT, {
     update(_, res) {
       dispatch({ type: "AUTH", payload: res.data.verifyAccount })
       setErrors({})
-      window.location.href = `/`
+      window.location.href = `/add-username`
     },
     onError(err) {
       if (err.graphQLErrors && err.graphQLErrors[0]) {
@@ -34,50 +25,47 @@ const VerifyAccount = () => {
     },
   })
   const handleChange = (e) => {
-    let { name, value } = e.target
+    let { value } = e.target
     if (value === "") {
       setErrors({ code: "This field must not be empty" })
-      setVariables({
-        [name]: parseInt(value),
-      })
+      setCode(parseInt(value))
     } else {
       setErrors({})
-      setVariables({
-        [name]: parseInt(value),
-      })
+      setCode(parseInt(value))
     }
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (variables.code === "") {
+    if (code === "") {
       setErrors({ code: "This field must not be empty" })
     } else {
       verifyUserAccount({
-        variables,
+        variables: { code },
       })
     }
   }
   return (
-    <div>
-      {user && <h1>Welcome {user.username}, please verify your account</h1>}
-      {user && <p>Your verification code is {user.verification_code}</p>}
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <Input
-          type="number"
-          name="code"
-          handleChange={handleChange}
-          placeholder="------"
-          title="Verify Code:"
-          id="verify-code"
-          error={errors.code && errors.code}
-        />
-        {errors.msg && <p>{errors.msg}</p>}
-        <FormButton
-          text={loading ? "Please Wait" : "Verify Account"}
-          btnClass="primary"
-          btnGroupClass=""
-        />
-      </form>
+    <div className="auth verify-code">
+      <div className="container">
+        {user && <p>Your verification code is {user.verification_code}</p>}
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <Input
+            type="number"
+            name="code"
+            handleChange={handleChange}
+            placeholder="------"
+            title="Verify Code:"
+            id="verify-code"
+            error={errors.code && errors.code}
+          />
+          {errors.msg && <p className="alert alert-danger">{errors.msg}</p>}
+          <FormButton
+            text={loading ? "Please Wait" : "Verify Account"}
+            btnClass="primary"
+            btnGroupClass=""
+          />
+        </form>
+      </div>
     </div>
   )
 }

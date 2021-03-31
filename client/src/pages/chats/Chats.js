@@ -1,34 +1,21 @@
-import React, { useState, useLayoutEffect, Suspense } from "react"
+import React, { useState, useLayoutEffect, Suspense, lazy } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import { gql, useLazyQuery } from "@apollo/client"
-import PageLoader from "../../components/pageloader/PageLoader"
+import { useLazyQuery } from "@apollo/client"
 import { useAuthState } from "../../context/auth"
-import { useChatsDispatch, useChatsState } from "../../context/chats"
-import Header from "../../components/chats/Header"
-import "../../styles/chat.sass"
+import { useChatsDispatch } from "../../context/chats"
+import { GET_CHATS } from "../../graphql/queries"
+import "./chats.sass"
 
-const UserChat = React.lazy(() => import("../../components/chats/UserChat"))
-const Chat = React.lazy(() => import("./Chat"))
-
-const GET_CHATS = gql`
-  query getUserChats {
-    getUserChats {
-      id
-      username
-      dp
-      status
-      latestMessage {
-        content
-        createdAt
-      }
-    }
-  }
-`
+const Aside = lazy(() => import("../../components/chats/Aside"))
+const Home = lazy(() => import("./Home"))
+const Chat = lazy(() => import("./Chat"))
 
 const Chats = () => {
-  const { chats } = useChatsState()
   const dispatch = useChatsDispatch()
-  const { user, userLoading } = useAuthState()
+  const { user } = useAuthState()
+  const [isMobile, setMobile] = useState(false)
+  const [aside, setAside] = useState(true)
+
   const [getChats, { loading }] = useLazyQuery(GET_CHATS, {
     onCompleted(res) {
       dispatch({
@@ -42,54 +29,25 @@ const Chats = () => {
   })
 
   useLayoutEffect(() => {
+    if (window.screen.width <= 768) {
+      setMobile(true)
+    }
+  }, [setMobile, isMobile])
+
+  useLayoutEffect(() => {
     getChats()
   }, [])
   return (
-    <div>
-      {userLoading ? (
-        <>Loading</>
+    <div className="chats">
+      {loading ? (
+        <>Please Wait</>
       ) : (
         <>
-          {user ? (
-            <>
-              <Header chats={chats} />
-              <div
-                style={{
-                  position: "sticky",
-                  top: "0",
-                }}
-              >
-                <h1>Chats</h1>
-                <ul>
-                  {loading ? (
-                    <>Please wait</>
-                  ) : (
-                    <>
-                      {chats && chats.length > 0 ? (
-                        <>
-                          {chats.map((user) => (
-                            <UserChat key={user.id} user={user} />
-                          ))}
-                        </>
-                      ) : (
-                        <p>No chats available</p>
-                      )}
-                    </>
-                  )}
-                </ul>
-              </div>
-              <Suspense fallback={<PageLoader />}>
-                <Switch>
-                  <Route exact path="/chats">
-                    Welcome to the chats section
-                  </Route>
-                  <Route path={`/chats/:slug`} render={() => <Chat />} />
-                </Switch>
-              </Suspense>
-            </>
-          ) : (
-            <>Unauthorized</>
-          )}
+          {<Aside />}
+          <Switch>
+            <Route exact path="/chats" render={() => <Home />} />
+            <Route path="/chats/:username" render={() => <Chat />} />
+          </Switch>
         </>
       )}
     </div>

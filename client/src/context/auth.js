@@ -13,7 +13,7 @@ const authReducer = (state, action) => {
       return {
         ...state,
         userLoading: false,
-        isAuthenticated: payload.verified === true ? true : false,
+        // isAuthenticated: payload.verified === true ? true : false,
         user: payload,
       }
     case "REGISTER":
@@ -22,7 +22,7 @@ const authReducer = (state, action) => {
       return {
         ...state,
         userLoading: false,
-        isAuthenticated: payload.verified === true ? true : false,
+        // isAuthenticated: payload.verified === true ? true : false,
         user: payload,
       }
     case "VERIFY_ACCOUNT":
@@ -30,7 +30,7 @@ const authReducer = (state, action) => {
       return {
         ...state,
         userLoading: false,
-        isAuthenticated: payload.verified === true ? true : false,
+        // isAuthenticated: payload.verified === true ? true : false,
         user: payload,
       }
     case "LOGOUT":
@@ -39,7 +39,7 @@ const authReducer = (state, action) => {
         ...state,
         user: null,
         userLoading: false,
-        isAuthenticated: false,
+        // isAuthenticated: false,
       }
     case "CHANGE_MODE":
       return {
@@ -47,12 +47,11 @@ const authReducer = (state, action) => {
         mode: "dark",
       }
     case "AUTH":
-      // console.log(state)
       return {
         ...state,
         userLoading: false,
         user: payload,
-        isAuthenticated: payload.verified === true ? true : false,
+        // isAuthenticated: payload.verified === true ? true : false,
       }
     default:
       return {

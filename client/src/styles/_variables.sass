@@ -1,0 +1,12 @@
+
+@mixin flexCenter()
+    display: flex
+    justify-content: center
+    align-items: center
+
+@mixin flexVary($content, $items, $wrap, $direction)
+    display: flex
+    justify-content: $content
+    align-items: $items
+    flex-wrap: $wrap
+    flex-direction: $direction

@@ -42,14 +42,21 @@ const Search = () => {
     })
     setError(null)
   }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    searchProfiles({
+      variables: { keyword },
+    })
+  }
   useEffect(() => {
     searchProfiles({
       variables: { keyword },
     })
   }, [])
+
   return (
     <div>
-      <form>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <Input
           type="text"
           placeholder="Search profiles"
@@ -79,11 +86,14 @@ const Search = () => {
                       title,
                       id,
                     }) => (
-                      <div key={username} style={{
-                        padding: "1em",
-                        margin: "2em",
-                        border: "1px solid gray"
-                      }}>
+                      <div
+                        key={username}
+                        style={{
+                          padding: "1em",
+                          margin: "2em",
+                          border: "1px solid gray",
+                        }}
+                      >
                         <Link
                           to={{ pathname: `/p/${username}`, state: { id } }}
                         >

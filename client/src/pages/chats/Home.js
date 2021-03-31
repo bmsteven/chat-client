@@ -2,12 +2,12 @@ import React, { lazy } from "react"
 
 const Layout = lazy(() => import("../../components/chats/Layout"))
 
-const Chat = () => {
+const Home = () => {
   return (
-    <div>
-      <Layout page="user">Hello There</Layout>
+    <div className="chat-page">
+      <Layout page="home">Hello world</Layout>
     </div>
   )
 }
 
-export default Chat
+export default Home

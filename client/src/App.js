@@ -1,71 +1,35 @@
-import React, { useEffect, useState } from "react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-} from "react-router-dom"
-import { gql, useLazyQuery } from "@apollo/client"
-import { useAuthDispatch, useAuthState } from "./context/auth"
+import React, { useEffect, lazy } from "react"
+import Cookies from "js-cookie"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { useLazyQuery } from "@apollo/client"
+import { useAuthDispatch } from "./context/auth"
+import { GET_USER } from "./graphql/queries"
+import "./styles/styles.sass"
+import "./styles/colors.sass"
 
-const Home = React.lazy(() => import("./pages/Home"))
-const Register = React.lazy(() => import("./pages/Register"))
-const Login = React.lazy(() => import("./pages/Login"))
-const VerifyAccount = React.lazy(() => import("./pages/VerifyAccount"))
-const Search = React.lazy(() => import("./pages/Search"))
-const Profile = React.lazy(() => import("./pages/Profile"))
-const Followers = React.lazy(() => import("./pages/Followers"))
-const Followings = React.lazy(() => import("./pages/Followings"))
-const Connections = React.lazy(() => import("./pages/Connections"))
-const UserProfile = React.lazy(() => import("./pages/UserProfile"))
-const ConnectionsRequests = React.lazy(() =>
-  import("./pages/ConnectionsRequests")
-)
-const MyRequests = React.lazy(() => import("./pages/MyRequests"))
-const Chats = React.lazy(() => import("./pages/chats/Chats"))
-
-const GET_USER = gql`
-  query auth {
-    auth {
-      id
-      username
-      verified
-      verification_code
-      first_name
-      middle_name
-      last_name
-      bio
-      dp
-      cover_image
-      DOB
-      about
-      gender
-    }
-  }
-`
+const Home = lazy(() => import("./pages/Home"))
+const Register = lazy(() => import("./pages/Register"))
+const Login = lazy(() => import("./pages/Login"))
+const VerifyAccount = lazy(() => import("./pages/VerifyAccount"))
+const AddUsername = lazy(() => import("./pages/AddUsername"))
+const Search = lazy(() => import("./pages/Search"))
+const Profile = lazy(() => import("./pages/Profile"))
+const Followers = lazy(() => import("./pages/Followers"))
+const Followings = lazy(() => import("./pages/Followings"))
+const Connections = lazy(() => import("./pages/Connections"))
+const Chats = lazy(() => import("./pages/chats/Chats"))
 
 const App = () => {
-  const [error, setError] = useState(null)
   const dispatch = useAuthDispatch()
-  const { user, isAuthenticated, userLoading } = useAuthState()
-  let history = useHistory()
+  let token = Cookies.get("token")
   const [getUser, { loading }] = useLazyQuery(GET_USER, {
-    onError(err) {
-      setError("Internal server error, couldn't load user")
-    },
     onCompleted(res) {
       dispatch({ type: "AUTH", payload: res.auth })
     },
   })
-  const logout = () => {
-    dispatch({ type: "LOGOUT" })
-  }
-  const goBack = () => {
-    history.goBack()
-  }
+
   useEffect(() => {
-    getUser()
+    if (token) getUser()
   }, [getUser])
   return (
     <div className="app">
@@ -73,45 +37,26 @@ const App = () => {
         "Loading"
       ) : (
         <Router>
-          <Link to="/">Home</Link>{" "}
-          {user ? (
-            <>
-              <Link to="/user/profile">View Profile</Link>{" "}
-              <Link to="/chats">Chats</Link>{" "}
-              <button onClick={logout}>Logout</button>{" "}
-            </>
-          ) : (
-            <>
-              <Link to="/login">Login</Link>{" "}
-              <Link to="/register">Register</Link>{" "}
-            </>
-          )}
-          <button onClick={goBack}>Go back</button>
           <Switch>
             <Route exact path="/" render={() => <Home />} />
-
             <Route path="/register" render={() => <Register />} />
-
             <Route path="/login" render={() => <Login />} />
-
             <Route path="/verify-account" render={() => <VerifyAccount />} />
             <Route
               path="/verify-account/:slug"
               render={() => <VerifyAccount />}
             />
-
+            <Route path="/add-username" render={() => <AddUsername />} />
             <Route path="/search/:slug" render={() => <Search />} />
-
             <Route path="/search" render={() => <Search />} />
             <Route exact path="/p" render={() => <Search />} />
-            <Route path="/p/:slug" render={() => <Profile />} />
-            <Route path="/connections/:slug" render={() => <Connections />} />
-            <Route path="/followers/:slug" render={() => <Followers />} />
-            <Route path="/followings/:slug" render={() => <Followings />} />
-            <Route path="/user/profile" render={() => <UserProfile />} />
-            <Route path="/user" render={() => <UserProfile />} />
-            <Route path="/requests" render={() => <ConnectionsRequests />} />
-            <Route path="/my-requests" render={() => <MyRequests />} />
+            <Route exact path="/p/:username" render={() => <Profile />} />
+            <Route path="/followers/:username" render={() => <Followers />} />
+            <Route path="/followings/:username" render={() => <Followings />} />
+            <Route
+              path="/connections/:username"
+              render={() => <Connections />}
+            />
             <Route path="/chats" render={() => <Chats />} />
           </Switch>
         </Router>

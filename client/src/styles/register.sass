@@ -1,0 +1,46 @@
+@import "./_variables"
+
+.register
+    min-height: 100vh
+    @include flexCenter()
+    .container
+        width: 80%
+        max-width: 1200px
+        height: 100%
+        margin: 3rem 0
+        transition: height .5s
+        @include flexVary(center , _, no-wrap, _ )
+        .column
+            width: 50%
+            min-height: 500px
+            transition: height .2s
+            &.left-column
+                padding: 3rem 2rem
+            &.right-column
+                padding-top: 3rem
+                form
+                    padding: 0 3rem 2rem
+                    width: 100%
+                .extra-stuffs
+                    padding: 3rem 2rem
+                    text-align: center
+                    opacity: .8
+
+@media screen and ( max-width: 992px )
+    .register
+        .container
+            width: 90%
+            .column
+                width: 60%
+                &.left-column
+                    width: 40%
+
+@media screen and ( max-width: 768px )
+    .register
+        .container
+            width: 100%
+            margin: 0
+            .column
+                width: 100%
+                &.left-column
+                    display: none

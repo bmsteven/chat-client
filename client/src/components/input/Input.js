@@ -1,4 +1,5 @@
 import React from "react"
+import "./input.sass"
 
 const Input = ({
   inputClass,
@@ -10,16 +11,19 @@ const Input = ({
   handleChange,
   title,
   error,
+  success,
 }) => {
   return (
     <div
       className={
         error
-          ? `input control ${inputClass} error`
-          : `input control ${inputClass}`
+          ? `form-control ${inputClass} error`
+          : `form-control ${inputClass}`
       }
     >
-      <label htmlFor={id}>{title}</label>
+      <label htmlFor={id} className="text-primary">
+        {title}
+      </label>
       <input
         type={type}
         name={name}
@@ -28,7 +32,8 @@ const Input = ({
         id={id}
         onChange={(e) => handleChange(e)}
       />
-      {error && <small>{error}</small>}
+      {error && <small className="text-danger">{error}</small>}
+      {success && <small className="text-success">{success}</small>}
     </div>
   )
 }

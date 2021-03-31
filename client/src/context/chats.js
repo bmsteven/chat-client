@@ -25,6 +25,7 @@ const chatsReducer = (state, action) => {
 export const ChatsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(chatsReducer, {
     chats: [],
+    results: [],
   })
   return (
     <ChatsDispatchContext.Provider value={dispatch}>

@@ -1,0 +1,142 @@
+@import "./_colors"
+
+.app
+    background: $bg
+
+.text-primary
+    color: $primary
+
+.text-danger
+    color: $secondary
+
+.extra-stuffs
+    background: $bg
+
+.alert
+    &.alert-danger
+        color: $danger-text
+        border: 1px solid $danger-border
+        background: $danger
+
+.btn-primary
+    background: $secondary
+    color: white
+    border: none
+    &:hover
+        opacity: .9
+
+.btn-disabled
+    background: gray
+    border: none
+
+.register
+    .container
+        box-shadow: 5px 4px 25px 20px rgba(0, 0, 0, 0.07)
+        .column
+            background: white
+            &.left-column
+                background: linear-gradient(180deg, rgba(33, 38, 67, 0.2) -30%, rgba(22, 24, 37, .9) 60%), url("../assets/images/connect.jpeg") no-repeat center center
+                background-size: cover
+
+.form-control
+    input
+        background: none
+        border: none
+        border-bottom: 1px solid lightgray
+        &::placeholder
+            color: gray
+        &:focus
+            border-bottom-color: $primary
+    &.error
+        &.error
+            input
+                border-bottom-color: $secondary
+
+.icon
+    &:hover
+        color: $secondary
+
+.chat-aside
+    background: white
+    nav
+        ul
+            li
+                &:hover
+                    opacity: .7
+                &.active
+                    color: $secondary
+    .chat-aside-search
+        form
+            box-shadow: 1px 1px 30px 15px rgba(0, 0, 0, 0.1)
+            &:focus
+                box-shadow: none
+
+    .chats
+        .chat
+            box-shadow: 1px 1px 20px 5px rgba(0, 0, 0, 0.1)
+            transition: .2s
+            &.active
+                background: $primary
+                color: white
+                box-shadow: none
+            &:hover
+                background: $bg
+                box-shadow: none
+            .message-content
+                span
+                    background: $secondary
+                    color: white
+
+.app.dark-mode
+    background: $dark-bg
+
+    .extra-stuffs
+        background: $dark-bg
+        color: white
+
+    .form-control
+        input
+            background: none
+            border: none
+            border-bottom: 1px solid lightgray
+            &::placeholder
+                color: gray
+            &:focus
+                border-bottom-color: $primary
+        &.error
+            &.error
+                input
+                    border-bottom-color: $secondary
+
+    .chat-aside
+        background: $dark-color
+        border: none
+        color: white
+        .chat-aside-search
+            form
+                box-shadow: 1px 1px 30px 15px rgba(0, 0, 0, 0.1)
+                background: $dark-bg
+                button
+                    color: $bg
+                &:focus
+                    box-shadow: none
+                input
+                    color: $bg
+
+        .chats
+            .chat
+                box-shadow: 1px 1px 20px 5px rgba(0, 0, 0, 0.1)
+                background: $dark-card-bg
+                transition: .2s
+                color: white
+                &.active
+                    background: $primary
+                    color: white
+                    box-shadow: none
+                &:hover
+                    background: $dark-header
+                    box-shadow: none
+                .message-content
+                    span
+                        background: $secondary
+                        color: white
