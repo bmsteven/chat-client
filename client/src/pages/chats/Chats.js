@@ -38,7 +38,7 @@ const Chats = () => {
     getChats()
   }, [])
   return (
-    <div className="chats">
+    <div className="chats-page">
       {loading ? (
         <>Please Wait</>
       ) : (

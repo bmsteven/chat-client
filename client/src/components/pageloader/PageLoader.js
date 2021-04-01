@@ -1,7 +1,7 @@
 import React from "react"
 
 const PageLoader = () => {
-  return <div>loading, please wait...</div>
+  return <div>loading</div>
 }
 
 export default PageLoader

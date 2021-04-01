@@ -15,6 +15,10 @@ const chatsReducer = (state, action) => {
       return {
         ...state,
       }
+    case "LOAD_MESSAGES":
+      return {
+        ...state,
+      }
     default:
       return {
         state,

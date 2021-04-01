@@ -28,6 +28,7 @@ const Home = () => {
       {user ? (
         <>
           <div>Hello {user.username}</div>
+          <Link to="/chats">Chats</Link>
           <button onClick={logout}>Logout</button>
           <button onClick={goBack}>Go Back</button>
         </>

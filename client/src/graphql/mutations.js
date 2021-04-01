@@ -41,3 +41,28 @@ export const ADD_USERNAME = gql`
     }
   }
 `
+
+export const SEND_MESSAGE = gql`
+  mutation sendMessage(
+    $username: String!
+    $chatId: Int
+    $content: String!
+    $media: String
+    $media_type: String
+    $links: [String]
+  ) {
+    sendMessage(
+      username: $username
+      chatId: $chatId
+      content: $content
+      media: $media
+      media_type: $media_type
+      links: $links
+    ) {
+      content
+      createdAt
+      senderId
+      recipientId
+    }
+  }
+`

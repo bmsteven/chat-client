@@ -34,3 +34,17 @@ export const GET_CHATS = gql`
     }
   }
 `
+
+export const GET_MESSAGES = gql`
+  query getMessages($username: String!) {
+    getMessages(username: $username) {
+      id
+      content
+      createdAt
+      senderId
+      recipientId
+      read_status
+      received_status
+    }
+  }
+`

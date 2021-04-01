@@ -6,7 +6,7 @@ const Search = () => {
   }
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      <input placeholder="Search anything" />
+      <input placeholder="Search anything..." />
     </form>
   )
 }

@@ -1,32 +1,14 @@
 import React, { useState } from "react"
-import { gql, useMutation } from "@apollo/client"
+import {
+  IoMdAttach,
+  AiOutlineSend,
+  AiOutlineLoading3Quarters,
+} from "react-icons/all"
+import { useMutation } from "@apollo/client"
+import { SEND_MESSAGE } from "../../graphql/mutations"
+import "./message-box.sass"
 
-const SEND_MESSAGE = gql`
-  mutation sendMessage(
-    $id: Int!
-    $chatId: Int
-    $content: String!
-    $media: String
-    $media_type: String
-    $links: [String]
-  ) {
-    sendMessage(
-      id: $id
-      chatId: $chatId
-      content: $content
-      media: $media
-      media_type: $media_type
-      links: $links
-    ) {
-      content
-      createdAt
-      senderId
-      recipientId
-    }
-  }
-`
-
-const SendMessage = ({ id }) => {
+const SendMessage = ({ username }) => {
   const [content, setContent] = useState("")
 
   const [sendMessage, { loading }] = useMutation(SEND_MESSAGE, {
@@ -45,56 +27,30 @@ const SendMessage = ({ id }) => {
 
     sendMessage({
       variables: {
-        id,
+        username,
         content,
       },
     })
   }
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "0",
-        left: "0",
-        background: "white",
-        width: "100%",
-        maxWidth: "100%",
-        textAlign: "center",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
-        margin: "auto",
-      }}
-    >
-      <form
-        onSubmit={(e) => handleSubmit(e)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "center",
-        }}
-      >
+    <div className="send-message-box">
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <input id="file" type="file" />
+        <label className="file-upload" htmlFor="file">
+          <IoMdAttach className="icon" />
+        </label>
         <textarea
           name="content"
           placeholder="Send a message"
           onChange={(e) => handleChange(e)}
           value={content}
-          style={{
-            width: "500px",
-            display: "block",
-            maxWidth: "80%",
-            height: "70px",
-          }}
         />
-        <button
-          disabled={loading}
-          style={{
-            height: "70px",
-          }}
-        >
-          {loading ? "Sending" : "Send"}
+        <button disabled={loading}>
+          {loading ? (
+            <AiOutlineLoading3Quarters className="icon loader" />
+          ) : (
+            <AiOutlineSend className="icon" />
+          )}
         </button>
       </form>
     </div>
