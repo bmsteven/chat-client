@@ -1,12 +1,27 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { FiSettings } from "react-icons/all"
 import { useChatsState } from "../../context/chats"
 import Chat from "../chats/Chat"
 import Search from "./Search"
 import "./aside.sass"
 
-const Aside = () => {
-  const { chats, results } = useChatsState()
+const Aside = ({ user }) => {
+  let { chats, results } = useChatsState()
+  let [sortedChats, setSortedChats] = useState([])
+
+  useEffect(() => {
+    setSortedChats(
+      chats
+        .slice()
+        .sort((a, b) =>
+          Number(
+            new Date(b.latestMessage.createdAt) -
+              new Date(a.latestMessage.createdAt)
+          )
+        )
+    )
+  }, [chats])
+
   return (
     <aside className="chat-aside">
       <header className="chat-aside-header">
@@ -29,11 +44,13 @@ const Aside = () => {
           <>Hello</>
         ) : (
           <>
-            {chats.length > 0 ? (
+            {sortedChats.length > 0 ? (
               <>
-                {chats.map((chat) => (
-                  <Chat chat={chat} key={chat.id} />
-                ))}
+                {sortedChats.map((chat) => {
+                  if (chat != null) {
+                    return <Chat chat={chat} key={chat.id} user={user} />
+                  }
+                })}
               </>
             ) : (
               <></>

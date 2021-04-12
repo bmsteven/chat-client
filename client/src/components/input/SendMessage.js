@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { AiOutlineClose } from "react-icons/ai"
+import { useAuthState } from "../../context/auth"
 import {
   IoMdAttach,
   AiOutlineSend,
@@ -8,12 +10,18 @@ import { useMutation } from "@apollo/client"
 import { SEND_MESSAGE } from "../../graphql/mutations"
 import "./message-box.sass"
 
-const SendMessage = ({ username }) => {
+const SendMessage = ({
+  username,
+  repliedMessage,
+  setRepliedMessage,
+  setOpenMedia,
+}) => {
+  const { user } = useAuthState()
   const [content, setContent] = useState("")
-
   const [sendMessage, { loading }] = useMutation(SEND_MESSAGE, {
     onCompleted(res) {
       setContent("")
+      reset()
     },
     onError(err) {
       console.log(err)
@@ -29,16 +37,38 @@ const SendMessage = ({ username }) => {
       variables: {
         username,
         content,
+        parentId: repliedMessage?.id,
       },
     })
   }
+
+  const reset = () => {
+    setRepliedMessage()
+  }
+
+  const open = () => {
+    setOpenMedia(true)
+  }
+
   return (
     <div className="send-message-box">
+      {repliedMessage && (
+        <div className="replied-message">
+          <AiOutlineClose className="icon" onClick={reset} />
+          <a href={`#${repliedMessage.id}`}>
+            {user.id === repliedMessage.senderId ? (
+              <div className="sender">You:</div>
+            ) : (
+              <div className="sender">{username}:</div>
+            )}
+            <p className="content">{repliedMessage.content}</p>
+          </a>
+        </div>
+      )}
       <form onSubmit={(e) => handleSubmit(e)}>
-        <input id="file" type="file" />
-        <label className="file-upload" htmlFor="file">
+        <span className="file-upload" onClick={open}>
           <IoMdAttach className="icon" />
-        </label>
+        </span>
         <textarea
           name="content"
           placeholder="Send a message"

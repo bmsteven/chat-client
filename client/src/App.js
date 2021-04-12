@@ -1,8 +1,10 @@
 import React, { useEffect, lazy } from "react"
 import Cookies from "js-cookie"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import { useLazyQuery } from "@apollo/client"
+import { useLazyQuery, useSubscription } from "@apollo/client"
+import { NEW_MESSAGE } from "./graphql/subscriptions"
 import { useAuthDispatch } from "./context/auth"
+import { useChatsDispatch } from "./context/chats"
 import { GET_USER } from "./graphql/queries"
 import "./styles/styles.sass"
 import "./styles/colors.sass"
@@ -12,6 +14,7 @@ const Register = lazy(() => import("./pages/Register"))
 const Login = lazy(() => import("./pages/Login"))
 const VerifyAccount = lazy(() => import("./pages/VerifyAccount"))
 const AddUsername = lazy(() => import("./pages/AddUsername"))
+const AddProfile = lazy(() => import("./pages/AddProfile"))
 const Search = lazy(() => import("./pages/Search"))
 const Profile = lazy(() => import("./pages/Profile"))
 const Followers = lazy(() => import("./pages/Followers"))
@@ -21,6 +24,8 @@ const Chats = lazy(() => import("./pages/chats/Chats"))
 
 const App = () => {
   const dispatch = useAuthDispatch()
+  const chatsDispatch = useChatsDispatch()
+  const { data: newMessage } = useSubscription(NEW_MESSAGE)
   let token = Cookies.get("token")
   const [getUser, { loading }] = useLazyQuery(GET_USER, {
     onCompleted(res) {
@@ -31,11 +36,14 @@ const App = () => {
   useEffect(() => {
     if (token) getUser()
   }, [getUser])
+  useEffect(() => {
+    if (newMessage) {
+      chatsDispatch({ type: "NEW_MESSAGE", payload: newMessage })
+    }
+  }, [newMessage])
   return (
     <div className="app">
-      {loading ? (
-        "Loading"
-      ) : (
+      {!loading && (
         <Router>
           <Switch>
             <Route exact path="/" render={() => <Home />} />
@@ -47,6 +55,7 @@ const App = () => {
               render={() => <VerifyAccount />}
             />
             <Route path="/add-username" render={() => <AddUsername />} />
+            <Route path="/add-profile" render={() => <AddProfile />} />
             <Route path="/search/:slug" render={() => <Search />} />
             <Route path="/search" render={() => <Search />} />
             <Route exact path="/p" render={() => <Search />} />

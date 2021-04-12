@@ -10,6 +10,7 @@ export const GET_USER = gql`
       first_name
       last_name
       dp
+      last_seen
     }
   }
 `
@@ -26,10 +27,16 @@ export const GET_CHATS = gql`
       id
       username
       dp
-      status
+      last_seen
       latestMessage {
+        id
         content
         createdAt
+        chatId
+        senderId
+        recipientId
+        read_status
+        received_status
       }
     }
   }
@@ -40,11 +47,57 @@ export const GET_MESSAGES = gql`
     getMessages(username: $username) {
       id
       content
+      media
+      media_type
       createdAt
       senderId
       recipientId
       read_status
       received_status
+      chatId
+      sender {
+        id
+        dp
+        username
+      }
+      recipient {
+        id
+        dp
+        username
+      }
+      parentMsg {
+        id
+        content
+        media
+        media_type
+        createdAt
+        senderId
+        recipientId
+        read_status
+        received_status
+        chatId
+        sender {
+          id
+          dp
+          username
+        }
+        recipient {
+          id
+          dp
+          username
+        }
+      }
+    }
+  }
+`
+
+export const GET_ONLINE_USERS = gql`
+  query getOnlineUsers {
+    getOnlineUsers {
+      id
+      username
+      dp
+      last_seen
     }
   }
 `

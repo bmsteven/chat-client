@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
+import { BsThreeDotsVertical } from "react-icons/bs"
 import Linkify from "react-linkify"
 import moment from "moment"
+import "./message.sass"
 
-const Message = ({ message, user }) => {
+const Message = ({ message, user, setRepliedMessage, username }) => {
   let {
     id,
     content,
@@ -11,29 +13,69 @@ const Message = ({ message, user }) => {
     received_status,
     senderId,
     recipientId,
+    sender,
+    parentMsg,
   } = message
+  const [open, setOpen] = useState(false)
+  createdAt = moment(createdAt).format("HH:mm")
 
-  let today = new Date()
-
-  let created = new Date(createdAt)
-
-  if (today.setHours(0, 0, 0, 0) == created.setHours(0, 0, 0, 0)) {
-    createdAt = moment(createdAt).format("HH:mm")
-  } else {
-    createdAt = moment(createdAt).format("MMM DD, YYYY HH:mm a")
+  const addMessage = () => {
+    setRepliedMessage(message)
   }
+
+  const toggle = () => {
+    setOpen(!open, () => {
+      document.addEventListener("click", close)
+    })
+  }
+
+  const close = () => {
+    setOpen(false, () => {
+      document.removeEventListener("click", close)
+    })
+  }
+
+  const deleteMessage = () => {}
+
   return (
-    <div className={user.id === senderId ? "message sent" : "message"}>
-      <div>
-        <div className="parent-msg"></div>
-        <div className="msg-content">
-          <p>
-            <Linkify>{content}</Linkify>
-          </p>
-          <span>{createdAt}</span>
+    <>
+      <div
+        className={user.id === senderId ? "message sent" : "message"}
+        id={id}
+      >
+        <div className="more-options">
+          <span onClick={toggle}>
+            <BsThreeDotsVertical className="icon" />
+          </span>
+          <div className={open ? "more open" : "more"}>
+            <span onClick={addMessage}>Reply</span>
+            {user.id === senderId && (
+              <span onClick={deleteMessage}>Delete Message</span>
+            )}
+          </div>
+        </div>
+        <div>
+          {parentMsg && (
+            <div className="parent-msg">
+              <a href={`#${parentMsg.id}`}>
+                <div className="sender">
+                  {user.id === parentMsg.senderId ? "You:" : `${username}:`}
+                </div>
+                <p>{parentMsg.content}</p>
+              </a>
+            </div>
+          )}
+          <div className="msg-content">
+            <p>
+              <Linkify>{content}</Linkify>
+            </p>
+            <div className="created-at">
+              <span>{createdAt}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

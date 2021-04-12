@@ -1,4 +1,5 @@
 import React, { lazy } from "react"
+import { Link } from "react-router-dom"
 import { BiArrowBack } from "react-icons/all"
 import "./header.sass"
 import defaultDp from "../../assets/images/default-dp.png"
@@ -15,7 +16,9 @@ const Header = ({ page, username }) => {
           <div className="user-container">
             <div className="container">
               <div className="logo">
-                <h3>Logo</h3>
+                <Link to="/">
+                  <h3>Logo</h3>
+                </Link>
               </div>
               <UserNots />
             </div>
@@ -33,7 +36,9 @@ const Header = ({ page, username }) => {
         ) : (
           <div className="container">
             <div className="logo">
-              <h2>Logo</h2>
+              <Link to="/">
+                <h3>Logo</h3>
+              </Link>
             </div>
             <div className="search">
               <Search />

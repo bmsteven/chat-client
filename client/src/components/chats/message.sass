@@ -1,0 +1,79 @@
+.message-box
+    width: auto
+    max-width: 70%
+    margin: .2rem
+    position: relative
+    display: inline-block
+    left: 0
+    cursor: pointer
+    &:hover
+        .message
+            box-shadow: none
+            .more-options
+                display: block
+
+    .message
+        padding: 6px
+        border-radius: 10px
+        color: #282247
+        white-space: pre-line
+        background: white
+        border-top-left-radius: 0
+        position: relative
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, .15)
+        &::before
+            content: ""
+            position: absolute
+            left: -11px
+            top: 0
+            width: 0
+            height: 0
+            border-style: solid
+            border-width: 0 11px 9px 0
+            border-color: transparent white transparent transparent
+        &.sent
+            background: #F2D8FF
+            border-top-left-radius: 10px
+            border-top-right-radius: 0
+            &::before
+                left: 100%
+                width: 0
+                height: 0
+                border-style: solid
+                border-width: 9px 11px 0 0
+                border-color: #F2D8FF transparent transparent transparent
+        .parent-msg
+            background: #8c32b60e
+            padding: .3rem
+            margin-bottom: .3rem
+            a
+                color: #041644bb
+                font-size: .8rem
+            p
+                // padding-right: 2rem
+                margin-bottom: 0
+                font-size: .9rem
+        .more-options
+            position: absolute
+            right: .3rem
+            top: .3rem
+            display: none
+            .icon
+                font-size: .8rem
+                opacity: .4
+
+            .mores
+                display: none
+                &.open
+                    display: block
+
+        .msg-content
+            p
+                padding-right: 2rem
+                margin-bottom: -5px
+        .created-at
+            color: #838181
+            font-size: .8rem
+            text-align: right
+            width: 100%
+            padding-left: 2rem

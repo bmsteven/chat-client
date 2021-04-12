@@ -2,16 +2,42 @@
     main
         width: calc( 100% - 400px )
         margin-left: 400px
-        margin-top: 60px
+        top: 60px
+        position: relative
         height: calc( 100vh - 60px )
         z-index: 1
         display: flex
         .main-content
+            position: relative
             width: calc( 100% - 300px )
-            overflow-y: auto
+            overflow: hidden
+            .chat-section
+                height: 100%
+                height: calc( 100% - 90px )
+                top: 20px
+                overflow-y: auto
+                position: relative
+                .messages
+                    display: flex
+                    justify-content: flex-start
+                    flex-direction: column-reverse
+                    max-width: 100%
+                    margin: auto
+                    position: relative
+                    bottom: 0
+                    padding: 2rem
+                    position: relative
+                    .day
+                        width: 100%
+                        padding: 2rem 0
+                        position: sticky
+                        top: 60px
+                        text-align: center
+
         .aside-contents
             width: 300px
             background: white
             height: 100%
             overflow-y: auto
             border-left: 1px solid #D9D9D9
+            padding: 1rem

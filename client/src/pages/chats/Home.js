@@ -6,8 +6,16 @@ const Home = () => {
   return (
     <div className="chat-page">
       <Layout>
-        <div className="main-content"></div>
-        <div className="aside-contents"></div>
+        <div
+          className="main-content"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h1>Welcome to chat section</h1>
+        </div>
       </Layout>
     </div>
   )

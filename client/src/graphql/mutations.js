@@ -42,6 +42,16 @@ export const ADD_USERNAME = gql`
   }
 `
 
+export const ADD_DP = gql`
+  mutation addDp($dp: Upload!) {
+    addDp(dp: $dp) {
+      filename
+      mimetype
+      encoding
+    }
+  }
+`
+
 export const SEND_MESSAGE = gql`
   mutation sendMessage(
     $username: String!
@@ -49,6 +59,7 @@ export const SEND_MESSAGE = gql`
     $content: String!
     $media: String
     $media_type: String
+    $parentId: Int
     $links: [String]
   ) {
     sendMessage(
@@ -58,11 +69,17 @@ export const SEND_MESSAGE = gql`
       media: $media
       media_type: $media_type
       links: $links
+      parentId: $parentId
     ) {
-      content
-      createdAt
-      senderId
-      recipientId
+      id
+    }
+  }
+`
+
+export const UPDATE_LAST_SEEN = gql`
+  mutation updateLastSeen($now: Date!) {
+    updateLastSeen(now: $now) {
+      first_name
     }
   }
 `
